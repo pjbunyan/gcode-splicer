@@ -118,7 +118,7 @@ if '__main__' == __name__:
                         help = 'specify the names of the input files')
     parser.add_argument('-o', '--output-file', type = str, nargs=None,
                         help = '''specify the output file.''')
-    parser.add_argument('-s', '--start_layer', type = int, nargs = '?',
+    parser.add_argument('-s', '--start-layer', type = int, nargs = '?',
                         const = 0, help = '''The layer to start 
                         switching at. Defaults to Layer 1''')
     args = parser.parse_args()
