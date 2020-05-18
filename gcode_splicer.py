@@ -46,13 +46,6 @@ def compare_list_lengths(lists):
     else:
         return False
         
-def get_lines(file, start_line = 0, end_line = None):
-    lines = []
-    for line in file[start_line:end_line]:
-        lines.append(line)
-    
-    return lines
-        
 def parse_input_files(file_list):
     """For each input file generate a list containing each line and a list
         containing the locations of each layer change"""
@@ -90,13 +83,12 @@ def splice_files(files, files_layer_changes, start_layer):
     for file_num, file in enumerate(files[:-1]):
         end_layer += num_layers_per_file
         end_line = files_layer_changes[file_num][end_layer]
-        lines = get_lines(file, start_line, end_line);
+        lines = file[start_line:end_line];
         output_file.extend(lines)
         start_line = end_line
     
     last_file = files[-1]
-    print(start_line)
-    lines = get_lines(last_file, start_line);
+    lines = last_file[start_line:];
     output_file.extend(lines)
     
     return output_file
