@@ -18,7 +18,8 @@ def continue_question(explanation = ''):
     return answer
 
 def open_file(filename, mode):
-
+    """Helper for opening files. Checks for common issues and asks for
+        confirmation if a file already exisits for writing"""
     if 'w' in mode and os.path.exists(output_filename):
         if 'n' == continue_question('File ' + output_filename 
                                     + ' already exists'):
@@ -37,6 +38,8 @@ def open_file(filename, mode):
     return file
     
 def compare_list_lengths(lists):
+    """Returns True if all lists in the input list are the same length,
+        otherwise returns false"""
     if all(isinstance(element, list) for element in lists):
         first_length = len(lists[0])
         return all((len(list) == first_length) for list in lists[1:])
@@ -51,6 +54,8 @@ def get_lines(file, start_line = 0, end_line = None):
     return lines
         
 def parse_input_files(file_list):
+    """For each input file generate a list containing each line and a list
+        containing the locations of each layer change"""
     layer_start_pattern = re.compile(r';LAYER:\d+\n')
     files = []
     files_layer_changes = []
@@ -69,6 +74,10 @@ def parse_input_files(file_list):
     return files, files_layer_changes
     
 def splice_files(files, files_layer_changes, start_layer):
+    """Splice input files together taking the same number of layers from
+        each input file. All lines up to the start layer are taken from 
+        the first file, and all lines after the last layer are taken from
+        the last file"""
     output_file = []
 
     num_files = len(files)
@@ -93,11 +102,16 @@ def splice_files(files, files_layer_changes, start_layer):
     return output_file
 
 def main(input_filenames, output_filename, start_layer):
+    """Take a list of gcode files, parse them to get the lines and layer
+        change locations for each one. Once this is done we can splice
+        them together taking an equal numbr of lines from each file (After
+        the start layer)"""
     
     files, files_layer_changes = parse_input_files(input_filenames)
         
     #If there aren't an equal number of layers in all files then we
-    #shouldn't try to combine them
+    #shouldn't try to combine them. This could be changed to basestring
+    #the split points from the file with the lowest number of layers
     if compare_list_lengths(files_layer_changes) == False:
         print('Files do not contain an equal number of layers!')
         sys.exit()
@@ -113,6 +127,7 @@ def main(input_filenames, output_filename, start_layer):
 
 
 if '__main__' == __name__:
+    """Parse the arguments given and hand these off to the main function"""
     parser = argparse.ArgumentParser()
     parser.add_argument('gcode_files', type = str, nargs = '+',
                         help = 'specify the names of the input files')
