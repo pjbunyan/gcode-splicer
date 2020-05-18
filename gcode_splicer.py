@@ -102,8 +102,8 @@ def main(input_filenames, output_filename, start_layer):
     files, files_layer_changes = parse_input_files(input_filenames)
         
     #If there aren't an equal number of layers in all files then we
-    #shouldn't try to combine them. This could be changed to basestring
-    #the split points from the file with the lowest number of layers
+    #shouldn't try to combine them. This could be changed to basing the
+    #split points from the file with the lowest number of layers
     if compare_list_lengths(files_layer_changes) == False:
         print('Files do not contain an equal number of layers!')
         sys.exit()
